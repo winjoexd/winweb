@@ -1,3 +1,5 @@
+#![recursion_limit="10000"]
+
 use wasm_bindgen::prelude::*;
 use yew::prelude::*;
 
@@ -9,6 +11,11 @@ struct Model {
 enum Msg {
     AddOne,
     MinusOne,
+    ConnectClick,
+}
+
+fn handle_connect(){
+
 }
 
 impl Component for Model {
@@ -25,6 +32,7 @@ impl Component for Model {
         match msg {
             Msg::AddOne => self.value += 1,
             Msg::MinusOne => self.value -= 1,
+            Msg::ConnectClick => handle_connect(),
         }
         true
     }
@@ -36,9 +44,19 @@ impl Component for Model {
     fn view(&self) -> Html {
         html! {
             <div>
-                <button onclick=self.link.callback(|_| Msg::AddOne)>{ "+1" }</button>
-                <button onclick=self.link.callback(|_| Msg::MinusOne)>{ "-1" }</button>
-                <p>{ self.value }</p>
+                <div>
+                    <button onclick=self.link.callback(|_| Msg::AddOne)>{ "+1" }</button>
+                    <button onclick=self.link.callback(|_| Msg::MinusOne)>{ "-1" }</button>
+                    <p>{ self.value }</p>
+                </div>
+                
+                <div>
+                    <button onclick=self.link.callback(|_| Msg::ConnectClick)>{ "Connect" }</button>
+                    <button id="disconnect">{ "Disconnect" }</button>
+                    <button id="send">{ "Send" }</button>
+            
+                    <input id="text" type="text"/>
+                </div>
             </div>
         }
     }
