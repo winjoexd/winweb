@@ -2,10 +2,12 @@
 
 use wasm_bindgen::prelude::*;
 use yew::prelude::*;
+use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
 
 struct Model {
     link: ComponentLink<Self>,
     value: i64,
+    ws: Option<WebSocketTask>,
 }
 
 enum Msg {
@@ -25,6 +27,7 @@ impl Component for Model {
         Self {
             link,
             value: 0,
+            ws: None,
         }
     }
 
@@ -50,13 +53,13 @@ impl Component for Model {
                     <p>{ self.value }</p>
                 </div>
                 
-                <div>
+                <p>
                     <button onclick=self.link.callback(|_| Msg::ConnectClick)>{ "Connect" }</button>
                     <button id="disconnect">{ "Disconnect" }</button>
-                    <button id="send">{ "Send" }</button>
-            
-                    <input id="text" type="text"/>
-                </div>
+                </p>
+                <p>{ "Connected: " } { !self.ws.is_none() } </p><br/>
+                <button id="send">{ "Send" }</button>
+                <input id="text" type="text"/>
             </div>
         }
     }
